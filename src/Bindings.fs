@@ -107,6 +107,7 @@ module Bindings =
     [<JSEmitInline("new atomSpaceView.SelectListView()")>]
     let SelectListViewCtor () : FunScript.TypeScript.atom.SelectListView = failwith "JS"
 
+
     [<JSEmitInline("atom.views.getView({0})")>]
     let getView(editor : IEditor) : Element = failwith "JS"
 

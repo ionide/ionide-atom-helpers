@@ -24,7 +24,7 @@ module Process =
         if isWin () then
             name
         else
-            let path = Globals.atom.config.get("atom-fsharp.MonoPath") |> unbox<string>
+            let path = Globals.atom.config.get("ionide-fsharp.MonoPath") |> unbox<string>
             path + "/" + name
 
     ///Create new notification or append text to existing notification
@@ -76,7 +76,7 @@ module Process =
                         Globals.spawn(linuxCmd, prms, options)
         procs
 
-    let exec location linuxCmd cmd = 
+    let exec location linuxCmd cmd =
         let options = {cwd = Globals.atom.project.getPaths().[0]} |> unbox<AnonymousType599>
         let procs = if isWin() then
                         execFile(location, cmd, options, fun _ _ _ -> Globals.console.log "aaa")
