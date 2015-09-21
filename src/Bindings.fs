@@ -127,3 +127,7 @@ module Bindings =
 
         [<FunScript.JSEmitInline("({0}.write({1}, {2}))")>]
         member __.write (v : string, encoding : string)  : unit = failwith "JS"
+
+    type IConfig with
+        [<FunScript.JSEmitInline("({0}.set({1}, {2}))")>]
+        member __.set(v : string, o : obj) : unit = failwith "JS" 
