@@ -58,6 +58,7 @@
     <Compile Include="ViewHelpers.fs" />
     <Compile Include="ListViewHelpers.fs" />
     <Compile Include="ProcessHelpers.fs" />
+    <Compile Include="SettingsHelpers.fs" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
