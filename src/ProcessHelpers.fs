@@ -46,7 +46,7 @@ module Process =
         let output = input.ToString()
         Globals.console.log(output)
         if error then
-            notice currentNotification true "FAKE error" output
+            notice currentNotification true "FAKE Error" output
         else
             notice currentNotification false "" output
         ()
