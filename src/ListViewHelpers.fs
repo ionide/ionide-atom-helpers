@@ -16,7 +16,7 @@ module ListView =
     type ItemDescription = {data : string}
 
     ///Helper function for registrating ListView modal panels
-    let regiterListView stopChangingCallback cancelledCallback confirmedCallback viewFunction removeFiler=
+    let registerListView stopChangingCallback cancelledCallback confirmedCallback viewFunction removeFiler=
         let listView = SelectListViewCtor ()
         let editorView =
             listView
