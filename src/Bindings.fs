@@ -15,6 +15,27 @@ module Promise =
     let resolve (o : obj[]) : unit = failwith "JS"
 
 module JS =
+
+    [<Literal>]
+    let byString =
+        """ function({1}, {0}) {
+            {1} = {1}.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+            {1} = {1}.replace(/^\./, '');           // strip a leading dot
+            var a = {1}.split('.');
+            for (var i = 0, n = a.length; i < n; ++i) {
+                var k = a[i];
+                if (k in o) {
+                    {0} = {0}[k];
+                } else {
+                    return;
+                }
+            }
+            return {o};
+        } """
+
+    [<JSEmit(byString)>]
+    let getPropertyByString <'T> (prop:string) (o:obj) : 'T = failwith "JS"
+
     [<JSEmitInline("({1}[{0}])")>]
     let getProperty<'T> (prop:string) (o:obj) : 'T = failwith "JS"
 
@@ -30,6 +51,10 @@ module JS =
 module Emitter =
     [<FunScript.JSEmitInline("new Emitter()")>]
     let create () : IEmitter = failwith "JS"
+
+module Toml =
+    [<FunScript.JSEmitInline("toml.parse({0})")>]
+    let parse (str : string) : 'a = failwith "JS"
 
 
 [<AutoOpen>]
@@ -127,3 +152,7 @@ module Bindings =
 
         [<FunScript.JSEmitInline("({0}.write({1}, {2}))")>]
         member __.write (v : string, encoding : string)  : unit = failwith "JS"
+
+    type IConfig with
+        [<FunScript.JSEmitInline("({0}.set({1}, {2}))")>]
+        member __.set(v : string, o : obj) : unit = failwith "JS"
