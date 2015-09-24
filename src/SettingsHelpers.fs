@@ -31,6 +31,8 @@ module Settings =
         script : string
         build : string
         startString : string
+        parameters : string []
+        startingPage : string 
     }
 
     type Settings = {
