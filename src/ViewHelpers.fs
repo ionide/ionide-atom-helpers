@@ -51,6 +51,7 @@ module ViewsHelpers =
     let isFSharpEditor (editor : IEditor) =
         JS.isDefined editor &&
         JS.isPropertyDefined editor "getGrammar" &&
+        JS.isDefined editor.getGrammar() &&
         editor.getGrammar().name.Contains "F#"
 
     let private getCursor (editor:IEditor) =
