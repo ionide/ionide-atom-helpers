@@ -129,12 +129,17 @@ module Bindings =
         [<FunScript.JSEmitInline("({0}.onDidStopChanging({1}))")>]
         member __.onDidStopChanging(cb: unit -> unit) : Disposable = failwith "JS"
 
+
     [<JSEmitInline("{0}.decorateMarker({1}, {type: 'highlight', class: {2}})")>]
     let decorateMarker(ed : IEditor, marker : IDisplayBufferMarker, cls : string) : unit = failwith "JS"
 
     [<JSEmitInline("new atomSpaceView.SelectListView()")>]
     let SelectListViewCtor () : FunScript.TypeScript.atom.SelectListView = failwith "JS"
 
+
+    type IWorkspace with
+          [<FunScript.JSEmitInline("({0}.open({1}))")>]
+          member __._open(uri: string) : unit = failwith "JS"
 
     [<JSEmitInline("atom.views.getView({0})")>]
     let getView(editor : IEditor) : Element = failwith "JS"
