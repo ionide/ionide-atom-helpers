@@ -42,8 +42,8 @@ module ViewsHelpers =
     let bufferPositionFromMouseEvent (e : JQueryMouseEventObject) (editor : IEditor) =
         pixelPositionFromMouseEvent e editor
         |> fun n -> let t = unbox<cords>(n) //TEMPORARY BUG FIX
-                    t.top <- t.top + editor.displayBuffer.getScrollTop()
-                    t.left <- t.left + editor.displayBuffer.getScrollLeft()
+                    t.top <- t.top + editor.getScrollTop()
+                    t.left <- t.left + editor.getScrollLeft()
                     t
         |> editor.screenPositionForPixelPosition
         |> editor.bufferPositionForScreenPosition
@@ -64,7 +64,7 @@ module ViewsHelpers =
     let private stopMovingHandler timer timeout callback = fun n ->
         clearTimer timer
         timer := Some (Globals.setTimeout(( fun _ -> callback n),timeout ) )
-        
+
     let OnCursorStopMoving (editor : IEditor) timeout callback =
         let mutable timer = ref None : NodeJS.Timer option ref
         editor.onDidChangeCursorPosition(stopMovingHandler timer timeout callback |> unbox<Function>)

@@ -32,7 +32,7 @@ module Settings =
         build : string
         startString : string
         parameters : string []
-        startingPage : string 
+        startingPage : string
     }
 
     type Settings = {
@@ -45,7 +45,8 @@ module Settings =
             let p = Globals.atom.project.getPaths().[0]
             let t = (Globals.readFileSync (p + "/.ionide")).toString ()
                     |> Toml.parse
+                    |> map
             Globals.console.log t
-            t |> map
+            if JS.isDefined t then t else def
         with
         | _ -> def

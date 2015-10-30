@@ -8,11 +8,14 @@ open FunScript.TypeScript.atom
 module Promise =
     type Promise = class end
 
-    [<JSEmitInline("new Promise(function(resolve){{0}()})")>]
+    [<JSEmitInline("new Promise(function(resolve,reject){{0}()})")>]
     let create( cb : unit -> unit) : Promise = failwith "JS"
 
     [<JSEmitInline("resolve({0})")>]
     let resolve (o : obj[]) : unit = failwith "JS"
+
+    [<JSEmitInline("reject()")>]
+    let reject () : unit = failwith "JS"
 
 module JS =
 
@@ -34,7 +37,7 @@ module JS =
         } """
 
     [<JSEmit(byString)>]
-    let getPropertyByString <'T> (prop:string) (o:obj) : 'T = failwith "JS"
+    let getPropertyByString<'T> (prop:string) (o:obj) : 'T = failwith "JS"
 
     [<JSEmitInline("({1}[{0}])")>]
     let getProperty<'T> (prop:string) (o:obj) : 'T = failwith "JS"
@@ -145,6 +148,12 @@ module Bindings =
     [<FunScript.JSEmitInline("(child_process.execFile({0}, {1}, {2}, {3}))")>]
     let execFile(file : string, args : string[], options : child_process.AnonymousType599, cb: Error -> Buffer -> Buffer -> unit) : child_process.ChildProcess = failwith "JS"
 
+    type IEditor with
+        [<FunScript.JSEmitInline("({0}.getScrollTop())")>]
+        member __.getScrollTop() : float = failwith "JS"
+
+        [<FunScript.JSEmitInline("({0}.getScrollLeft())")>]
+        member __.getScrollLeft() : float = failwith "JS"
 
     type stream.Writable with
         [<FunScript.JSEmitInline("({0}.setEncoding({1}))")>]
