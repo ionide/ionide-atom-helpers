@@ -68,7 +68,21 @@ module Process =
     ///Spawn process
     let spawn location linuxCmd (cmd : string) =
         let cmd' = if cmd = "" then [||] else cmd.Split(' ')
-        let options = {cwd = Globals.atom.project.getPaths().[0]} |> unbox<AnonymousType598>
+        let cwd =
+            try
+                let t = Globals.atom.project.getPaths().[0]
+                if Globals.existsSync t then
+                    t
+                else
+                    null
+            with
+            | _ -> null
+
+        let options =
+            try
+                {cwd = cwd} |> unbox<AnonymousType598>
+            with
+            | _ -> null |> unbox<AnonymousType598>
         let procs = if isWin() then
                         Globals.spawn(location, cmd', options)
                     else
