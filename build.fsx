@@ -42,14 +42,14 @@ Target "Clean" (fun _ ->
 )
 
 Target "Build" (fun _ ->
-    !! "src\*.fsproj"
+    !! "src/*.fsproj"
     |> MSBuildRelease "temp" "Rebuild"
     |> ignore
-    [   @"temp\FunScript.TypeScript.Binding.atom.dll" 
-        @"temp\FunScript.TypeScript.Binding.jquery.dll"
-        @"temp\FunScript.TypeScript.Binding.lib.dll" 
-        @"temp\FunScript.TypeScript.Binding.node.dll" 
-        @"temp\Ionide.Helpers.dll"
+    [   "temp/FunScript.TypeScript.Binding.atom.dll"
+        "temp/FunScript.TypeScript.Binding.jquery.dll"
+        "temp/FunScript.TypeScript.Binding.lib.dll"
+        "temp/FunScript.TypeScript.Binding.node.dll"
+        "temp/Ionide.Helpers.dll"
     ] |> Copy "release"
     DeleteDir "temp"
 )
