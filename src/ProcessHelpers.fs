@@ -65,24 +65,26 @@ module Process =
                 view.addClass("icon-flame") |> ignore
         )
 
+    let private getCwd () =
+        try
+            let t = Globals.atom.project.getPaths().[0]
+            if Globals.existsSync t then
+                t
+            else
+                null
+        with
+        | _ -> null
+
     ///Spawn process
     let spawn location linuxCmd (cmd : string) =
         let cmd' = if cmd = "" then [||] else cmd.Split(' ')
-        let cwd =
-            try
-                let t = Globals.atom.project.getPaths().[0]
-                if Globals.existsSync t then
-                    t
-                else
-                    null
-            with
-            | _ -> null
+        let cwd = getCwd()
 
         let options =
             try
                 {cwd = cwd} |> unbox<AnonymousType598>
             with
-            | _ -> null |> unbox<AnonymousType598>
+            | _ -> {cwd = null} |> unbox<AnonymousType598>
         let procs = if isWin() then
                         Globals.spawn(location, cmd', options)
                     else
@@ -91,7 +93,7 @@ module Process =
         procs
 
     let exec location linuxCmd cmd =
-        let options = {cwd = Globals.atom.project.getPaths().[0]} |> unbox<AnonymousType599>
+        let options = {cwd = getCwd()} |> unbox<AnonymousType599>
         let procs = if isWin() then
                         execFile(location, cmd, options, fun _ _ _ -> Globals.console.log "aaa")
                     else
@@ -109,13 +111,13 @@ module Process =
     ///Spawn process - same way on Windows and non-Windows
     let spawnSame location (cmd : string) =
         let cmd' = if cmd = "" then [||] else cmd.Split(' ')
-        let options = {cwd = Globals.atom.project.getPaths().[0]} |> unbox<AnonymousType598>
+        let options = {cwd = getCwd()} |> unbox<AnonymousType598>
         Globals.spawn(location, cmd', options)
 
     //Spawn process - add default notification handlers
     let spawnWithNotifications location linuxCmd (cmd : string) =
         let cmd' = if cmd = "" then [||] else cmd.Split(' ')
-        let options = {cwd = Globals.atom.project.getPaths().[0]} |> unbox<AnonymousType598>
+        let options = {cwd = getCwd()} |> unbox<AnonymousType598>
         let procs = if isWin() then
                         Globals.spawn(location, cmd', options)
                     else
