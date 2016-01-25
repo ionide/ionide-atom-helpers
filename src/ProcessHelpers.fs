@@ -18,22 +18,22 @@ module Process =
 
     ///Checks if current OS is windows
     let isWin () =
-        Globals._process.platform.StartsWith("win")
+        Globals._process.platform.StartsWith "win"
 
     let fromPath name =
         if isWin () then
             name
         else
-            let path = Globals.atom.config.get("ionide-fsharp.MonoPath") |> unbox<string>
+            let path = Globals.atom.config.get "ionide-fsharp.MonoPath" |> unbox<string>
             path + "/" + name
 
     ///Create new notification or append text to existing notification
     let notice (currentNotification: INotification option ref) isError text details =
         match !currentNotification with
-        | Some n -> let view = Globals.atom.views.getView (n)
+        | Some n -> let view = Globals.atom.views.getView n
                     let t = ".content .detail .detail-content" |> jqC view
                     let line = "<div class='line'>" + details + "</div>"
-                    t.append(line) |> ignore
+                    t.append line |> ignore
                     ()
         | None -> let n = if isError then
                             Globals.atom.notifications.addError(text, { detail = details; dismissable = true } |> unbox<INotificationsOptions> )
@@ -44,7 +44,7 @@ module Process =
     ///Handle process output for spawnWithNotifications
     let private handle currentNotification error input =
         let output = input.ToString()
-        Globals.console.log(output)
+        Globals.console.log output
         if error then
             notice currentNotification true "FAKE Error" output
         else
@@ -54,15 +54,15 @@ module Process =
     ///Handle process exit for spawnWithNotifications
     let private handleExit currentNotification (code:string) =
         !currentNotification |> Option.iter (fun n ->
-            let view = Globals.atom.views.getView (n) |> jq'
-            view.removeClass("info") |> ignore
-            view.removeClass("icon-info") |> ignore
-            if code = "0" && view.hasClass("error") |> not then
-                view.addClass("success") |> ignore
-                view.addClass("icon-check") |> ignore
+            let view = Globals.atom.views.getView n |> jq'
+            view.removeClass "info" |> ignore
+            view.removeClass "icon-info" |> ignore
+            if code = "0" && view.hasClass "error" |> not then
+                view.addClass "success" |> ignore
+                view.addClass "icon-check" |> ignore
             else
-                view.addClass("error") |> ignore
-                view.addClass("icon-flame") |> ignore
+                view.addClass "error" |> ignore
+                view.addClass "icon-flame" |> ignore
         )
 
     let private getCwd () =
@@ -77,55 +77,55 @@ module Process =
 
     ///Spawn process
     let spawn location linuxCmd (cmd : string) =
-        let cmd' = if cmd = "" then [||] else cmd.Split(' ')
-        let cwd = getCwd()
+        let cmd' = if cmd = "" then [||] else cmd.Split ' '
+        let cwd = getCwd ()
 
         let options =
             try
                 {cwd = cwd} |> unbox<AnonymousType598>
             with
             | _ -> {cwd = null} |> unbox<AnonymousType598>
-        let procs = if isWin() then
+        let procs = if isWin () then
                         Globals.spawn(location, cmd', options)
                     else
                         let prms = Array.concat [ [|location|]; cmd']
-                        Globals.spawn(linuxCmd, prms, options)
+                        Globals.spawn (linuxCmd, prms, options)
         procs
 
     let exec location linuxCmd cmd =
         let options = {cwd = getCwd()} |> unbox<AnonymousType599>
-        let procs = if isWin() then
-                        execFile(location, cmd, options, fun _ _ _ -> Globals.console.log "aaa")
+        let procs = if isWin () then
+                        execFile (location, cmd, options, fun _ _ _ -> Globals.console.log "aaa")
                     else
                         let prms = Array.concat [ [|location|]; cmd]
-                        execFile(linuxCmd, prms, options, fun _ _ _ -> ())
+                        execFile (linuxCmd, prms, options, fun _ _ _ -> ())
         procs
 
     ///Simple process spawn - just location of executable file
     let spawnSimple location linuxCmd =
-        if isWin() then
-            Globals.spawn(location)
+        if isWin () then
+            Globals.spawn (location)
         else
-            Globals.spawn(linuxCmd, [|location|])
+            Globals.spawn (linuxCmd, [|location|])
 
     ///Spawn process - same way on Windows and non-Windows
     let spawnSame location (cmd : string) =
-        let cmd' = if cmd = "" then [||] else cmd.Split(' ')
+        let cmd' = if cmd = "" then [||] else cmd.Split ' '
         let options = {cwd = getCwd()} |> unbox<AnonymousType598>
         Globals.spawn(location, cmd', options)
 
     //Spawn process - add default notification handlers
     let spawnWithNotifications location linuxCmd (cmd : string) =
-        let cmd' = if cmd = "" then [||] else cmd.Split(' ')
-        let options = {cwd = getCwd()} |> unbox<AnonymousType598>
-        let procs = if isWin() then
+        let cmd' = if cmd = "" then [||] else cmd.Split ' '
+        let options = {cwd = getCwd ()} |> unbox<AnonymousType598>
+        let procs = if isWin () then
                         Globals.spawn(location, cmd', options)
                     else
                         let prms = Array.concat [ [|location|]; cmd']
-                        Globals.spawn(linuxCmd, prms, options)
+                        Globals.spawn (linuxCmd, prms, options)
 
         let currentNotification = ref None
-        procs.on("exit",unbox<Function>(handleExit currentNotification)) |> ignore
-        procs.stdout.on("data", unbox<Function>(handle currentNotification false)) |> ignore
-        procs.stderr.on("data", unbox<Function>(handle currentNotification true)) |> ignore
+        procs.on ("exit",unbox<Function>(handleExit currentNotification)) |> ignore
+        procs.stdout.on ("data", unbox<Function> (handle currentNotification false)) |> ignore
+        procs.stderr.on ("data", unbox<Function> (handle currentNotification true)) |> ignore
         procs

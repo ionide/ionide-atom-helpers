@@ -24,8 +24,8 @@ module ViewsHelpers =
     let getElementsByClass cls e =
         e
         |> fun n -> if JS.isDefined n then Some n else None
-        |> Option.map( Atom.JS.getProperty<HTMLElement>("rootElement") )
-        |> Option.map (fun n -> n.querySelectorAll(cls) )
+        |> Option.map (Atom.JS.getProperty<HTMLElement> "rootElement")
+        |> Option.map (fun n -> n.querySelectorAll cls)
 
     let pixelPositionFromMouseEvent (e : JQueryMouseEventObject) =
         getView
