@@ -52,7 +52,7 @@ module ViewsHelpers =
         JS.isDefined editor &&
         JS.isPropertyDefined editor "getGrammar" &&
         JS.isDefined (editor.getGrammar()) &&
-        editor.getGrammar().name.Contains "F#"
+        editor.getGrammar().name.Contains "fsharp"
 
     let private getCursor (editor:IEditor) =
         let bufferPt = editor.getCursorBufferPosition()
