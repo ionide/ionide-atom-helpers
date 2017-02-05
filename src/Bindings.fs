@@ -154,11 +154,14 @@ module Bindings =
     let execFile(file : string, args : string[], options : child_process.AnonymousType599, cb: Error -> Buffer -> Buffer -> unit) : child_process.ChildProcess = failwith "JS"
 
     type IEditor with
-        [<FunScript.JSEmitInline "({0}.getScrollTop())">]
+        [<FunScript.JSEmitInline "({0}.getElement().getScrollTop())">]
         member __.getScrollTop() : float = failwith "JS"
 
-        [<FunScript.JSEmitInline "({0}.getScrollLeft())">]
+        [<FunScript.JSEmitInline "({0}.getElement().getScrollLeft())">]
         member __.getScrollLeft() : float = failwith "JS"
+
+        [<FunScript.JSEmitInline "({0}.getElement().screenPositionForPixelPosition({1}))">]
+        member __.getScreenPositionForPixelPosition(o : obj) : obj = failwith "JS"
 
     type stream.Writable with
         [<FunScript.JSEmitInline "({0}.setEncoding({1}))">]

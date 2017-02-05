@@ -36,7 +36,7 @@ module ViewsHelpers =
                      | None  -> {top = 0.; left = 0.}
 
     let screenPositionFromMouseEvent (e : JQueryMouseEventObject) (editor : IEditor) =
-        editor.screenPositionForPixelPosition(pixelPositionFromMouseEvent e editor)
+        editor.getScreenPositionForPixelPosition(pixelPositionFromMouseEvent e editor)
 
 
     let bufferPositionFromMouseEvent (e : JQueryMouseEventObject) (editor : IEditor) =
@@ -45,7 +45,7 @@ module ViewsHelpers =
                     t.top <- t.top + editor.getScrollTop()
                     t.left <- t.left + editor.getScrollLeft()
                     t
-        |> editor.screenPositionForPixelPosition
+        |> editor.getScreenPositionForPixelPosition
         |> editor.bufferPositionForScreenPosition
 
     let isFSharpEditor (editor : IEditor) =
