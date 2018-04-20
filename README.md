@@ -1,3 +1,5 @@
+## [Project is deprecated, we suggest to use VSCode version of Ionide instead]
+
 # Ionide-Helpers
 
 Helper library containing some common functionalities used by other ionide plugins.
